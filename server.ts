@@ -1,10 +1,11 @@
 import app from "./src/app";
 import { envconfig } from "./src/config/config";
-function startServer(){
+import "./src/database/connection"
 
-   app.listen(envconfig.portnumber,function(){
+function startServer() {
+  app.listen(envconfig.portnumber, function () {
     console.log(`The server is connected in this port ${envconfig.portnumber}`);
-   })
+  });
 }
 
 startServer();
