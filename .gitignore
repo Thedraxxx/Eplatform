@@ -1,0 +1,36 @@
+# Node dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Compiled JS files (if not using outDir)
+*.js
+*.js.map
+
+# Sass/CSS cache or compiled files (optional, depending on how you compile)
+*.css
+*.css.map
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Env variables
+.env
+
+# IDE/editor config
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+Desktop.ini
