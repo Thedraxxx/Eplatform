@@ -6,7 +6,6 @@ export const registerSchema = z.object({
     .min(2)
     .max(10)
     .nonempty({ message: "This feild should not be empty" }),
-
   email: z
     .string()
     .nonempty({ message: "yo field empty hunu vayana" })
