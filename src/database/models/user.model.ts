@@ -11,6 +11,7 @@ import {
 import bcrypt from "bcrypt";
 import ApiError from "../../utils/APIerror";
 import { Request } from "express";
+import { where } from "sequelize";
 @Table({
   tableName: "users",
   modelName: "User",
@@ -57,6 +58,7 @@ class User extends Model {
               user.password = await bcrypt.hash(user.password,salt)
           }
   }
+  
   //registration
   static async register(data: {username: string, email: string, password: string}) {
     interface UserInput {
@@ -99,7 +101,25 @@ class User extends Model {
     }
   }
 
-
+  static async logIn(data: {email: string, password: string}){
+    const {email,password} = data;
+    if(!email || !password){
+      throw new ApiError(400,"Plase enter a valid input");
+    }
+    const existingUser = await User.findOne({where: {email}})
+    // console.log(existingUser,"yooo wassap")
+    if(!existingUser){
+       throw new ApiError(404,"Thsi email is not found !");
+    }
+    const isMatched = await bcrypt.compare(password, existingUser.password)
+    if(!isMatched){
+       throw new ApiError(401, "Password doesnt matched! ");
+    }
+      const userDataa= existingUser.get({plain: true});
+     const {password: _, ...safeUserData}= userDataa;
+    return safeUserData;
+     
+  }
 }
 
 //decorators use garara hamla password hash garnu parxa tara uta mongodb ma chi .pre vanna puction use garnu parthyo

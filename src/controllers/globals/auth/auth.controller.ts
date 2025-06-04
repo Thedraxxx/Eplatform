@@ -6,18 +6,16 @@ forget-password
 reset-password
 */
 
-//req ra res chai express ko type ho
-
 import { Request, Response } from "express";
 import ApiResponse from "../../../utils/ApiResponse";
 import User from "../../../database/models/user.model";
 
 class authController {
   async UserRegister(req: Request, res: Response) {
-    const safeUserData = await User.register(req.body);
-    console.log(safeUserData)
+    const safeUserData = await User.register(req.body); // model ma vako func provoke garxa..
+    console.log(safeUserData);
     return res
-      .status(201) //used for the created things
+      .status(201)
       .json(
         new ApiResponse(
           201,
@@ -26,7 +24,12 @@ class authController {
         )
       );
   }
-  async UserLogin(req: Request, res: Response) {}
+  async UserLogin(req: Request, res: Response) {
+    const userData = await User.logIn(req.body);
+    res
+      .status(200)
+      .json(new ApiResponse(200, userData, "Login Successfully !"));
+  }
 }
 
 export default new authController();
