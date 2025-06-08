@@ -7,5 +7,6 @@ export const envconfig ={
     db_username: process.env.DB_USER,
     db_host: process.env.DB_HOST,
     db_port: process.env.DB_PORT,
-    db_password: process.env.DB_PASSWORD
+    db_password: process.env.DB_PASSWORD,
+    node_env: process.env.NODE_ENV
 }

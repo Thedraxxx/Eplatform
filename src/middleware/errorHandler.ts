@@ -1,10 +1,11 @@
-import { error } from "console";
+
 import ApiError from "../utils/APIerror";
 import {Request, Response, NextFunction, ErrorRequestHandler} from "express"
+import { envconfig } from "../config/config";
 
 
 const errorHandler: ErrorRequestHandler  = (err,req,res,next)=>{
-      console.error("🔥 Error caught by middleware:", err);
+      console.error("🔥 Error caught by middleware: ", err);
   if(err instanceof ApiError){
 
     res.status(err.statusCode).json({
@@ -13,7 +14,7 @@ const errorHandler: ErrorRequestHandler  = (err,req,res,next)=>{
         message: err.message,
         data: err.data,
         error: err.error,
-        stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
+        stack: envconfig.node_env === "development" ? err.stack : undefined,
      })
     return;
   }
@@ -23,7 +24,7 @@ const errorHandler: ErrorRequestHandler  = (err,req,res,next)=>{
     message: err.message || "Internal server error",
     data:null,
     error: [],
-    stack: process.env.NODE_ENV === "development" ? err.stack : undefined,
+    stack: envconfig.node_env === "development" ? err.stack : undefined,
   })
   return;
 }

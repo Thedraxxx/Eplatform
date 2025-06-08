@@ -1,6 +1,6 @@
 import app from "./app";
 import { envconfig } from "./src/config/config";
-import "./src/database/connection"
+import "./src/database/connection" // hit the db 
 
 function startServer() {
   app.listen(envconfig.portnumber, function () {
