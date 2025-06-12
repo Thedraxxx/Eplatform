@@ -13,7 +13,7 @@ import User from "../../../database/models/user.model";
 class authController {
   async UserRegister(req: Request, res: Response) {
     const safeUserData = await User.register(req.body); // model ma vako func provoke garxa..
-    console.log(safeUserData);
+    // console.log(safeUserData);
     return res
       .status(201)
       .json(
