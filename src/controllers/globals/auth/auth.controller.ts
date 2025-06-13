@@ -25,10 +25,12 @@ class authController {
       );
   }
   async UserLogin(req: Request, res: Response) {
-    const userData = await User.logIn(req.body);
+    const {safeUserData,accessToken,refreshToken,options} = await User.logIn(req.body);
     res
       .status(200)
-      .json(new ApiResponse(200, userData, "Login Successfully !"));
+      .cookie("accessToken",accessToken,options)
+      .cookie("refreshToken",refreshToken,options)
+      .json(new ApiResponse(200,safeUserData,"user loggedIn successfully"));
   }
 }
 

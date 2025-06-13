@@ -8,8 +8,11 @@ import {
   AllowNull,
   Length,
 } from "sequelize-typescript";
-import bcrypt from "bcrypt";
+import bcrypt from "bcrypt"
 import ApiError from "../../utils/APIerror";
+import jwt from "jsonwebtoken";
+import { envconfig } from "../../config/config";
+import { StringValue } from "ms";
 @Table({
   tableName: "users",
   modelName: "User",
@@ -47,6 +50,10 @@ class User extends Model {
     defaultValue: "student",
   })
   declare role: string;
+  @Column({
+    type: DataType.STRING,
+  })
+  declare refreshToken: string;
 
   @BeforeCreate //yo hooks lai chi User.create() la check garxa
   @BeforeUpdate
@@ -67,8 +74,8 @@ class User extends Model {
       email: string;
       password: string;
     }
-    // console.log(req)
-    // console.log(req.body);
+    
+    console.log(data)
     const { username, email, password }: UserInput = data; //roles kina lidinum vands= BOLA attack bata bachna
     /* clean banauxa code lai (username = req.body.username) yesto 
     multiple times garnu bhanda samlai destructure garara rakdda ramro hunxa
@@ -119,10 +126,56 @@ class User extends Model {
     if (!isMatched) {
       throw new ApiError(401, "credential Invalid ");
     }
+
+    const accessToken = existingUser.generateAccessToken();
+    const refreshToken = existingUser.generateRefresToken();
+    existingUser.refreshToken = refreshToken;
+    await existingUser.save();
+    const options = {
+      httpOnly: true,
+      secure: envconfig.node_env === "production" ? true : false,
+      // sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    };
     const userDataa = existingUser.get({ plain: true });
-    const { password: _, ...safeUserData } = userDataa;
-    return safeUserData;
+    const {
+      password: mypassword,
+      refreshToken: refToken,
+      ...safeUserData
+    } = userDataa;
+    return {
+      safeUserData,
+      accessToken,
+      refreshToken,
+      options,
+    };
   }
+  generateAccessToken = () => {
+    return jwt.sign(
+      {
+        id: this.id,
+        email: this.email,
+        role: this.role,
+      },
+      envconfig.accesstoken_secret as string,
+      {
+        expiresIn: envconfig.accessToken_expiry as StringValue,
+      }
+    );
+  };
+  generateRefresToken = () => {
+    return jwt.sign(
+      {
+        id: this.id,
+        email: this.email,
+        role: this.role,
+      },
+      envconfig.refreshToken_secret as string,
+      {
+        expiresIn: envconfig.refreshToken_expiry as StringValue,
+      }
+    );
+  };
 }
 
 //decorators use garara hamla password hash garnu parxa tara uta mongodb ma chi .pre vanna puction use garnu parthyo
