@@ -8,7 +8,7 @@ import {
   AllowNull,
   Length,
 } from "sequelize-typescript";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 import ApiError from "../../utils/APIerror";
 import jwt from "jsonwebtoken";
 import { envconfig } from "../../config/config";
@@ -74,8 +74,8 @@ class User extends Model {
       email: string;
       password: string;
     }
-    
-    console.log(data)
+
+    console.log(data);
     const { username, email, password }: UserInput = data; //roles kina lidinum vands= BOLA attack bata bachna
     /* clean banauxa code lai (username = req.body.username) yesto 
     multiple times garnu bhanda samlai destructure garara rakdda ramro hunxa
