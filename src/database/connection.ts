@@ -2,7 +2,7 @@ import { Sequelize } from "sequelize-typescript"; // yo user garinxa type script
 import { envconfig } from "../config/config";
 
 const sequelize = new Sequelize({
-  database: envconfig.db_name, //database ko name ho
+  database: envconfig.db_name, 
   username: envconfig.db_username, //database ko username. default chi root hunxa
   port: Number(envconfig.db_port), // jaha chi database ko port chalxa
   password: envconfig.db_password,

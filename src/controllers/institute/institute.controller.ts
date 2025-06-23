@@ -27,7 +27,7 @@ class InstituteContoller {
         //if the fields are legit
         //create table and insert the data
         const instituteNumber: number = generateRandomNumber();
-        sequelize.query(`CREATE TABLE IF NOT EXISTS institute_${instituteNumber} (
+        await sequelize.query(`CREATE TABLE IF NOT EXISTS institute_${instituteNumber} (
                ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                instituteName VARCHAR(255) NOT NULL,
                instituteEmail VARCHAR(255) NOT NULL UNIQUE,
@@ -39,7 +39,7 @@ class InstituteContoller {
                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);
 
-        sequelize.query(
+       await sequelize.query(
             `INSERT INTO institute_${instituteNumber} (instituteName,instituteEmail,institutePhoneNumber,instituteAddress,institutePanNo,
       instituteVatNo) VALUES (?,?,?,?,?,?)`,
             {
