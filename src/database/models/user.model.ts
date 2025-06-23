@@ -54,6 +54,11 @@ class User extends Model {
     type: DataType.STRING,
   })
   declare refreshToken: string;
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  declare currentInstituteNumber: string;
 
   @BeforeCreate //yo hooks lai chi User.create() la check garxa
   @BeforeUpdate
@@ -68,11 +73,13 @@ class User extends Model {
     username: string;
     email: string;
     password: string;
+   
   }) {
     interface UserInput {
       username: string;
       email: string;
       password: string;
+      
     }
 
     console.log(data);
@@ -81,13 +88,12 @@ class User extends Model {
     multiple times garnu bhanda samlai destructure garara rakdda ramro hunxa
     2) yesla undefined lidaina so always define value matra halney
     */
-
+    
     if (!username || !email || !password) {
       throw new ApiError(400, "Enter a valid input");
     }
     try {
       const existingUser = await User.findOne({ where: { email } }); // yesla already db ma yo email xa ki xaina vanara return ma boolean value pathauxa
-
       if (existingUser) {
         throw new ApiError(409, "User already exist"); //409 chi dublicate user ko lagi use hunxa
       }

@@ -1,10 +1,11 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import ApiError from "../../utils/APIerror";
 import sequelize from "../../database/connection";
 import generateRandomNumber from "../../utils/generateRandomNumber";
 import ApiResponse from "../../utils/ApiResponse";
+import User from "../../database/models/user.model";
 class InstituteContoller {
-    async createInstitute(req: Request, res: Response) {
+    async createInstitute(req: Request, res: Response, next: NextFunction) {
         const {
             instituteName,
             instituteEmail,
@@ -38,7 +39,6 @@ class InstituteContoller {
                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);
-
        await sequelize.query(
             `INSERT INTO institute_${instituteNumber} (instituteName,instituteEmail,institutePhoneNumber,instituteAddress,institutePanNo,
       instituteVatNo) VALUES (?,?,?,?,?,?)`,
@@ -53,11 +53,23 @@ class InstituteContoller {
                 ],
             }
         );
+       const {userId, currentInstituteNumber} = req.body;
+     const result = await User.update({
+        currentInstituteNumber: instituteNumber,
+       },{
+        where: userId
+       });
+       console.log("Result aayo: ",result);
         return res.json(
             new ApiResponse(200,null,"institute creared")
         )
+        next();
     }
+    
 }
 
+const createTeacherTable = async()=>{
+
+}
 
 export default new InstituteContoller();
