@@ -91,15 +91,15 @@ class InstituteContoller {
        }
          await sequelize.query(`CREATE TABLE IF NOT EXISTS teacher_${instituteNumber}(
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-            name VARCHAR(255) NOT NULL ,
-            phoneNumber VARCHAR(255) NOT NULL,
-            course VARCHAR(255) NOT NULL
-            )`)
-          await sequelize.query(`INSERT INTO teacher_${instituteNumber}(name,phoneNumber,course) VALUES (?,?,?)`,{
-              replacements: [
-                "roshan","998898","science"
-              ]
-          })
+            teacherName VARCHAR(255) NOT NULL ,
+            teacherPhoneNumber VARCHAR(255) NOT NULL UNIQUE,
+            teacherEmail VARCHAR(255) NOT NULL UNIQUE,
+            teacherPhoto VARCHAR(225),
+            teacherSalary VARCHAR(100),
+            joindedDate DATE,
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            )`);
         next();
   }
    async studentController(req:IExtedREquest,res: Response,next: NextFunction){
@@ -110,7 +110,13 @@ class InstituteContoller {
         await sequelize.query(`CREATE TABLE IF NOT EXISTS student_${instituteNumber}(
             id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
             studentName VARCHAR(255) NOT NULL,
-            studentEmail VARCHAR(255) NOT NULL
+            studentEmail VARCHAR(255) NOT NULL,
+            studentPhoneNo VARCHAR(255) NOT NULL UNIQUE,
+            studentAddress TEXT,
+            enrolledDate DATE,
+            studentImage VARCHAR(255),
+            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);
         next()
  }
@@ -121,7 +127,12 @@ class InstituteContoller {
        }
        await sequelize.query(`CREATE TABLE IF NOT EXISTS course_${instituteNumber}(
         id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-        courseName VARCHAR(255) NOT NULL
+        courseName VARCHAR(255) NOT NULL UNIQUE,
+        coursePrice VARCHAR(255) NOT NULL,
+        courseDuration VARCHAR(100) NOT NULL,
+        courseLevel ENUM('beginner','intermediate','advance') NOT NULL,
+        createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )`);
       return res.json(instituteNumber)
  }
