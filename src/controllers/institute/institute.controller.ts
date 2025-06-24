@@ -100,8 +100,32 @@ class InstituteContoller {
                 "roshan","998898","science"
               ]
           })
-            return res.status(200).json("vayo...")
+        next();
   }
+   async studentController(req:IExtedREquest,res: Response,next: NextFunction){
+        const instituteNumber= req.user?.currentInstituteNumber
+         if(!instituteNumber){
+        throw new ApiError(401,"no institute number..")
+       }
+        await sequelize.query(`CREATE TABLE IF NOT EXISTS student_${instituteNumber}(
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            studentName VARCHAR(255) NOT NULL,
+            studentEmail VARCHAR(255) NOT NULL
+            )`);
+        next()
+ }
+ async courseController(req: IExtedREquest, res: Response, next: NextFunction){
+         const instituteNumber= req.user?.currentInstituteNumber
+         if(!instituteNumber){
+        throw new ApiError(401,"no institute number..")
+       }
+       await sequelize.query(`CREATE TABLE IF NOT EXISTS course_${instituteNumber}(
+        id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+        courseName VARCHAR(255) NOT NULL
+      )`);
+      return res.json(instituteNumber)
+ }
 }
+
 
 export default new InstituteContoller();
