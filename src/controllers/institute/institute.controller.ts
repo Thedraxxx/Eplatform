@@ -54,6 +54,19 @@ class InstituteContoller {
         ],
       }
     );
+   await sequelize.query(`CREATE TABLE IF NOT EXISTS user_institutes(
+          id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+          userId VARCHAR(255) REFERENCES users(id),
+          instituteNumber VARCHAR(255) UNIQUE 
+        )`);
+        if(req.user){
+       await sequelize.query(`INSERT INTO user_institutes(userId,instituteNumber) VALUES (?,?)`,{
+        replacements: [
+             req.user.id,
+             instituteNumber
+        ]
+       });
+       console.log(req.user?.id)
     const userId = req.user?.id;
     await User.update(
       {
@@ -63,18 +76,31 @@ class InstituteContoller {
       {
         where: { id: userId },
       }
-    );
+    )
+}
     if (req.user) {
       req.user.currentInstituteNumber = instituteNumber;
     }
-    res.status(200).json("vayoo..")
+    next();
   }
-  async teacherController(
-    req: IExtedREquest,
-    res: Response,
-    next: NextFunction
-  ) {
-    console.log(req.user)
+  async teacherController(req: IExtedREquest, res: Response,next: NextFunction ) {
+       const{teacherName, teacherPhoneNnumber, teacherCourse} = req.body;
+       const instituteNumber = req.user?.currentInstituteNumber;
+       if(!instituteNumber){
+        throw new ApiError(401,"no institute number..")
+       }
+         await sequelize.query(`CREATE TABLE IF NOT EXISTS teacher_${instituteNumber}(
+            id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+            name VARCHAR(255) NOT NULL ,
+            phoneNumber VARCHAR(255) NOT NULL,
+            course VARCHAR(255) NOT NULL
+            )`)
+          await sequelize.query(`INSERT INTO teacher_${instituteNumber}(name,phoneNumber,course) VALUES (?,?,?)`,{
+              replacements: [
+                "roshan","998898","science"
+              ]
+          })
+            return res.status(200).json("vayo...")
   }
 }
 

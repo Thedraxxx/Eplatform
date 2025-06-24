@@ -1,7 +1,7 @@
 import express from "express";
 import userRouter from "./src/routes/globals/auth/auth.route";
 import errorHandler from "./src/middleware/errorHandler";
-import instituteRouter from "./src/routes/institute/instituteRoute";
+import instituteRouter from "./src/routes/institute/Institute.route";
 const app = express();
 
 app.use(express.json({limit: "1mb"})) // yo chi meddileware ho jasla frontend bata ako data lai limit ma rakhxa DDos attack bata bachauxa..
