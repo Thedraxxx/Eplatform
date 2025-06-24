@@ -21,7 +21,7 @@ sequelize
   });
 //migrate garnu parxa
 sequelize
-  .sync({ force: false}) // yesla chi model lai Table ma convert garxa hai tw ... ra existing table xa bhana ignore garxa .. table xaina bhana naya table banauxa..
+  .sync({ alter: false}) // yesla chi model lai Table ma convert garxa hai tw ... ra existing table xa bhana ignore garxa .. table xaina bhana naya table banauxa..
   .then(() => {
     console.log("migrated successfully new changes");
   });

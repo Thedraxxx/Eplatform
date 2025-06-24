@@ -9,10 +9,12 @@ reset-password
 import { Request, Response } from "express";
 import ApiResponse from "../../../utils/ApiResponse";
 import User from "../../../database/models/user.model";
-
+import { registerValidation } from "../../../database/validation/user.validation";
 class authController {
   async UserRegister(req: Request, res: Response) {
-    const safeUserData = await User.register(req.body); // model ma vako func provoke garxa..
+    const userDataValidate = registerValidation.parse(req.body);
+    console.log(userDataValidate);
+    const safeUserData = await User.register(userDataValidate); // model ma vako func provoke garxa..
     // console.log(safeUserData);
     return res
       .status(201)

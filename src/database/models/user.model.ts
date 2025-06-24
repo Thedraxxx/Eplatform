@@ -37,9 +37,12 @@ class User extends Model {
   @Column({
     type: DataType.STRING,
     unique: true,
+    validate: {
+      isEmail: true,
+    }
   })
   declare email: string;
-
+  @AllowNull(false)
   @Column({
     type: DataType.STRING,
   })
@@ -56,7 +59,7 @@ class User extends Model {
   declare refreshToken: string;
   @Column({
     type: DataType.STRING,
-    allowNull: false,
+    allowNull: true,
   })
   declare currentInstituteNumber: string;
 
@@ -108,6 +111,7 @@ class User extends Model {
       const { password: _, ...safeUserData } = userData; //destructuring ho jsla chi password lai chi remove gardinca user lai show garnu vanda agadi
       return safeUserData;
     } catch (error) {
+       console.error("main errror: ",error)
       if (error instanceof ApiError) {
         //yo garena vana registraion faild dekhauxa email exist xa vana ni .. line 82 call hunna...
         throw error;

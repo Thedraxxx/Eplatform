@@ -19,5 +19,5 @@ const registerValidation = z.object({
     .string()
     .optional()
 });
-
+  export type IRegister = z.infer<typeof registerValidation>;
 export {registerValidation}
