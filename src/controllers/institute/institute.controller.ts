@@ -4,31 +4,32 @@ import sequelize from "../../database/connection";
 import generateRandomNumber from "../../utils/generateRandomNumber";
 import ApiResponse from "../../utils/ApiResponse";
 import User from "../../database/models/user.model";
+import { IExtedREquest } from "../../utils/types";
 class InstituteContoller {
-    async createInstitute(req: Request, res: Response, next: NextFunction) {
-        const {
-            instituteName,
-            instituteEmail,
-            institutePhoneNumber,
-            instituteAddress,
-        } = req.body;
-        console.log(req.body)
-        const institutePanNo = req.body.institutePanNo || null;
-        const instituteVatNo = req.body.instituteVatNo || null;
+  async createInstitute(req: IExtedREquest, res: Response, next: NextFunction) {
+    const {
+      instituteName,
+      instituteEmail,
+      institutePhoneNumber,
+      instituteAddress,
+    } = req.body;
+    console.log(req.body);
+    const institutePanNo = req.body.institutePanNo || null;
+    const instituteVatNo = req.body.instituteVatNo || null;
 
-        if (
-            !instituteName ||
-            !instituteEmail ||
-            !institutePhoneNumber ||
-            !instituteAddress 
-        ) {
-            throw new ApiError(400, "These feilds are required.");
-        }
+    if (
+      !instituteName ||
+      !instituteEmail ||
+      !institutePhoneNumber ||
+      !instituteAddress
+    ) {
+      throw new ApiError(400, "These feilds are required.");
+    }
 
-        //if the fields are legit
-        //create table and insert the data
-        const instituteNumber: number = generateRandomNumber();
-        await sequelize.query(`CREATE TABLE IF NOT EXISTS institute_${instituteNumber} (
+    //if the fields are legit
+    //create table and insert the data
+    const instituteNumber: number = generateRandomNumber();
+    await sequelize.query(`CREATE TABLE IF NOT EXISTS institute_${instituteNumber} (
                ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                instituteName VARCHAR(255) NOT NULL,
                instituteEmail VARCHAR(255) NOT NULL UNIQUE,
@@ -39,37 +40,42 @@ class InstituteContoller {
                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);
-       await sequelize.query(
-            `INSERT INTO institute_${instituteNumber} (instituteName,instituteEmail,institutePhoneNumber,instituteAddress,institutePanNo,
+    await sequelize.query(
+      `INSERT INTO institute_${instituteNumber} (instituteName,instituteEmail,institutePhoneNumber,instituteAddress,institutePanNo,
       instituteVatNo) VALUES (?,?,?,?,?,?)`,
-            {
-                replacements: [
-                    instituteName,
-                    instituteEmail,
-                    institutePhoneNumber,
-                    instituteAddress,
-                    institutePanNo,
-                    instituteVatNo
-                ],
-            }
-        );
-       const {userId, currentInstituteNumber} = req.body;
-     const result = await User.update({
-        currentInstituteNumber: instituteNumber,
-       },{
-        where: userId
-       });
-       console.log("Result aayo: ",result);
-        return res.json(
-            new ApiResponse(200,null,"institute creared")
-        )
-        next();
+      {
+        replacements: [
+          instituteName,
+          instituteEmail,
+          institutePhoneNumber,
+          instituteAddress,
+          institutePanNo,
+          instituteVatNo,
+        ],
+      }
+    );
+    const userId = req.user?.id;
+    await User.update(
+      {
+        currentInstituteNumber: instituteNumber.toString(),
+        role: "institute"
+      },
+      {
+        where: { id: userId },
+      }
+    );
+    if (req.user) {
+      req.user.currentInstituteNumber = instituteNumber;
     }
-    
-}
-
-const createTeacherTable = async()=>{
-
+    res.status(200).json("vayoo..")
+  }
+  async teacherController(
+    req: IExtedREquest,
+    res: Response,
+    next: NextFunction
+  ) {
+    console.log(req.user)
+  }
 }
 
 export default new InstituteContoller();
