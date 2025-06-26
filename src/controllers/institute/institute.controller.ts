@@ -83,7 +83,7 @@ class InstituteContoller {
     }
     next();
   }
-  async teacherController(req: IExtedREquest, res: Response,next: NextFunction ) {
+  async createTeacherTable(req: IExtedREquest, res: Response,next: NextFunction ) {
        const{teacherName, teacherPhoneNnumber, teacherCourse} = req.body;
        const instituteNumber = req.user?.currentInstituteNumber;
        if(!instituteNumber){
@@ -102,7 +102,7 @@ class InstituteContoller {
             )`);
         next();
   }
-   async studentController(req:IExtedREquest,res: Response,next: NextFunction){
+   async createStudentTable(req:IExtedREquest,res: Response,next: NextFunction){
         const instituteNumber= req.user?.currentInstituteNumber
          if(!instituteNumber){
         throw new ApiError(401,"no institute number..")
@@ -120,7 +120,7 @@ class InstituteContoller {
             )`);
         next()
  }
- async courseController(req: IExtedREquest, res: Response, next: NextFunction){
+ async createCourseTable(req: IExtedREquest, res: Response, next: NextFunction){
          const instituteNumber= req.user?.currentInstituteNumber
          if(!instituteNumber){
         throw new ApiError(401,"no institute number..")

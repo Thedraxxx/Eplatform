@@ -14,4 +14,8 @@ export const envconfig ={
     refreshToken_secret: process.env.REFRESH_TOKEN_SECRET,
     accessToken_expiry: process.env.ACCESS_TOKEN_EXPIRY,
     refreshToken_expiry: process.env.REFRESH_TOKEN_EXPIRY,
+
+    cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
+     cloud_api_key : process.env.CLOUDINARY_API_KEY,
+     cloud_api_secret : process.env.CLOUDINARY_API_SECRET,
 }

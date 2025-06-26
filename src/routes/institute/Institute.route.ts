@@ -4,6 +4,6 @@ import { Router } from "express";
 import isLoggedIn from "../../middleware/isLoggedin";
 const instituteRouter = Router();
 
-instituteRouter.route("/createInstitute").post(isLoggedIn,asyncHandler(instituteController.createInstitute),asyncHandler(instituteController.teacherController),asyncHandler(instituteController.studentController),asyncHandler(instituteController.courseController));
+instituteRouter.route("/createInstitute").post(isLoggedIn,asyncHandler(instituteController.createInstitute),asyncHandler(instituteController.createTeacherTable),asyncHandler(instituteController.createStudentTable),asyncHandler(instituteController.createCourseTable));
 
 export default instituteRouter;
