@@ -25,16 +25,17 @@ const instituteTeacherValidate = z.object({
       message: "Salary must be a valid number greater than 0",
     }),
 
-  joindedDate: z
+  joinedDate: z
     .string()
     .nonempty({ message: "Joining date is required" }),
     // .refine((date) => !isNaN(Date.parse(date)), {
     //   message: "Invalid date format",
     // }),
-
-  teacherImage: z
-    .string()
-    .nonempty({ message: "Image is required" }), // If file upload, we'll handle separately
+    teacherImage: z.object({
+        secure_url: z.string().nonempty().url("Invalid Image url"),
+        public_id: z.string().nonempty()
+    })
 });
+
 export type IInstTeacher = z.infer<typeof instituteTeacherValidate>
 export{ instituteTeacherValidate}

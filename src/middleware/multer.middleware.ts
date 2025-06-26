@@ -17,9 +17,19 @@ const storage = multer.diskStorage({
 const limits = { 
     fileSize: 5*1024*1025 //5 mb
 }
+const allowedFileTypes =[ 'image/png','image/jpeg','image/jpg']
+
 const upload = multer({
     storage,
-    limits
+    limits,
+    fileFilter(req, file, callback) {
+         if(allowedFileTypes.includes(file.mimetype)){
+            callback(null,true)
+         }
+         else{
+            callback(new Error("File type Invalid"))
+         }
+    },
 })
 
 export default upload;

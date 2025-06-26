@@ -9,7 +9,7 @@ app.use(express.json({limit: "1mb"})) // yo chi meddileware ho jasla frontend ba
 //INSTITUTE ROUTE
 app.use("/api/v2/users",userRouter);
 app.use("/api/v2/institute",instituteRouter)
-app.use("/api/v2/teacher",teacherInstRouter);
+app.use("/api/v2/institute",teacherInstRouter);
 
 
 app.use(errorHandler)

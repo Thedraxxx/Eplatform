@@ -96,7 +96,7 @@ class InstituteContoller {
             teacherEmail VARCHAR(255) NOT NULL UNIQUE,
             teacherPhoto VARCHAR(225),
             teacherSalary VARCHAR(100),
-            joindedDate DATE,
+            joinedDate DATE,
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);
