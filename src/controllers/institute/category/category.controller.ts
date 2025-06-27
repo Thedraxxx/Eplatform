@@ -44,5 +44,17 @@ const getSingleCategory = asyncHandler(async(req:IExtedREquest,res: Response)=>{
         }
         return res.status(200).json(new ApiResponse(200,category,"Fethced successfully"));
 });
-export {insertCategory, getAllCategory, getSingleCategory};
+const deleteCategory = asyncHandler(async(req: IExtedREquest,res: Response)=>{
+    const instituteNumber = req.user?.currentInstituteNumber
+    const slug =req.params.slug;
+    if(!slug){
+        throw new ApiError(400,"slug is required!");
+    }
+     const deletedCategory = await sequelize.query(`DELETE FROM category_${instituteNumber} WHERE categorySlug = ?`,{
+        type: QueryTypes.DELETE,
+        replacements: [slug]
+     })
+     return res.status(200).json(new ApiResponse(200,deletedCategory,"category deleted Successfully"))
+})
+export {insertCategory, getAllCategory, getSingleCategory, deleteCategory};
 
