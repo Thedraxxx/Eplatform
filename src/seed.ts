@@ -1,3 +1,5 @@
+import slug from "./utils/slugify"
+
 const categories = [
 
     {
