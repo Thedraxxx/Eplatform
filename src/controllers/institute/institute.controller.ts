@@ -129,8 +129,11 @@ class InstituteContoller {
         id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
         courseName VARCHAR(255) NOT NULL UNIQUE,
         coursePrice VARCHAR(255) NOT NULL,
+        courseDiscription TEXT NOT NULL,
         courseDuration VARCHAR(100) NOT NULL,
         courseLevel ENUM('beginner','intermediate','advance') NOT NULL,
+        courseThumbnail VARCHAR(255) NOT NULL,
+        courseSyllabus VARCHAR(255),
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )`);

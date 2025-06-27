@@ -7,18 +7,21 @@ import { IInstTeacher, instituteTeacherValidate } from "../../../database/valida
 import { Multer } from "multer";
 import uploadOnCloudnary from "../../../utils/cloudnary";
 const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Response)=>{
+     //image received
        const teacherImage = req.file as Express.Multer.File;
        if(!teacherImage){
           throw new ApiError(401,"Image is required")
        }
+       //upload to cloud
        const imagePath = teacherImage.path;
       const imageData = await uploadOnCloudnary(imagePath);
       req.body.teacherImage = imageData;
-    
+      //zod validation
       const validTeacherData: IInstTeacher = instituteTeacherValidate.parse(req.body);
        if(!validTeacherData){
           throw new ApiError(401,"zod error");
        }
+       //insertion query
        const instituteNumber =req.user?.currentInstituteNumber; 
        await sequelize.query(`INSERT INTO teacher_${instituteNumber}(teacherName, teacherPhoneNumber, teacherEmail,teacherPhoto, teacherSalary, joinedDate) VALUES (?,?,?,?,?,?) `,
           {     
