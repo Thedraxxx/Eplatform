@@ -5,6 +5,7 @@ import generateRandomNumber from "../../utils/generateRandomNumber";
 import ApiResponse from "../../utils/ApiResponse";
 import User from "../../database/models/user.model";
 import { IExtedREquest } from "../../utils/types";
+import categories from "../../seed";
 class InstituteContoller {
   async createInstitute(req: IExtedREquest, res: Response, next: NextFunction) {
     const {
@@ -119,6 +120,25 @@ class InstituteContoller {
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);
         next()
+ }
+ async createCategoryTable(req: IExtedREquest,res: Response,next: NextFunction){
+             const instituteNumber = req.user?.currentInstituteNumber;
+ await sequelize.query(`CREATE TABLE IF NOT EXISTS category_${instituteNumber}(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    categoryName VARCHAR(255) NOT NULL UNIQUE, 
+    categoryDescription TEXT,
+    createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  )`);
+   categories.forEach(async function (category) {
+            await sequelize.query(`INSERT INTO category_${instituteNumber}(categoryName,categoryDescription) VALUES (?,?)`,{
+              replacements: [
+                category.categoryName,category.categoryDescription
+              ]
+            })
+   });
+
+  next()
  }
  async createCourseTable(req: IExtedREquest, res: Response, next: NextFunction){
          const instituteNumber= req.user?.currentInstituteNumber
