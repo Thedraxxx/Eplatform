@@ -29,5 +29,8 @@ const insertCourse = asyncHandler(async(req: IExtedREquest, res: Response)=>{
              });
              return res.status(200).json(new ApiResponse(201,"Course inserted successfully."))
 });
+const getCOurse = asyncHandler(async()=>{
 
-export {insertCourse};
+})
+
+export {insertCourse, getCOurse};
