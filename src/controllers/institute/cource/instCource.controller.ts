@@ -44,7 +44,16 @@ const getCourse = asyncHandler(async(req: IExtedREquest,res: Response)=>{
 })
 const getSingleCourse = asyncHandler(async(req: IExtedREquest, res: Response)=>{
       const courseId = req.params.id;
-      const course = await sequelize.query(``)
+      const instituteNumber = req.user?.currentInstituteNumber
+      const course = await sequelize.query(`SELECT * FROM course_${instituteNumber} WHERE id=?`,{
+        type: QueryTypes.SELECT,
+        replacements: [courseId]
+      });
+       if(course.length === 0)
+    {
+        throw new ApiError(400,"No course found!");
+    }
+    return res.status(200).json(new ApiResponse(200,course,"Courses Fetched successfully."));
 })
 
 export {insertCourse, getCourse, getSingleCourse};
