@@ -132,7 +132,7 @@ const updateCategory = asyncHandler(
 const deleteCategory = asyncHandler(
   async (req: IExtedREquest, res: Response) => {
     const instituteNumber = req.user?.currentInstituteNumber;
-    const slug = req.params.slug;
+    const categoryId = req.params.id;
     if (!slug) {
       throw new ApiError(400, "slug is required!");
     }
@@ -140,7 +140,7 @@ const deleteCategory = asyncHandler(
       `DELETE FROM category_${instituteNumber} WHERE categorySlug = ?`,
       {
         type: QueryTypes.DELETE,
-        replacements: [slug],
+        replacements: [categoryId],
       }
     );
     return res

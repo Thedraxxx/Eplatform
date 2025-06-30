@@ -160,7 +160,7 @@ class InstituteContoller {
         courseThumbnail VARCHAR(255) NOT NULL,
         courseSyllabus VARCHAR(255),
         teacherId VARCHAR(36) REFERENCES teacher_${instituteNumber}(id),
-        categoryId VARCHAR(36) REFERENCES category_${instituteNumber}(id),
+        categoryId VARCHAR(36) NOT NULL REFERENCES category_${instituteNumber}(id),
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )`);

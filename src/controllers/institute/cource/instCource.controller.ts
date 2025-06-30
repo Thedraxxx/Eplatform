@@ -54,6 +54,16 @@ const getSingleCourse = asyncHandler(async(req: IExtedREquest, res: Response)=>{
         throw new ApiError(400,"No course found!");
     }
     return res.status(200).json(new ApiResponse(200,course,"Courses Fetched successfully."));
-})
+});
+const deleteCourse = asyncHandler(async(req: IExtedREquest,res: Response)=>{
+     const courseId = req.params.id;
+     const instituteNumber = req.user?.currentInstituteNumber
+     const course = await sequelize.query(`DELETE FROM course_${instituteNumber} WHERE id=?`,{
+        type: QueryTypes.DELETE,
+        replacements: [courseId]
+     });
+    return res.status(200).json(new ApiResponse(200,course,"course successfully deleted."))
+});
 
-export {insertCourse, getCourse, getSingleCourse};
+
+export {insertCourse, getCourse, getSingleCourse, deleteCourse};
