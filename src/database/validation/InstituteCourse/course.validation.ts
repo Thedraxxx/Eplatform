@@ -8,9 +8,13 @@ const instCourseValidation = z.object({
   courseLevel: z.enum(['beginner', 'intermediate', 'advance']),
   courseThumbnail: z.string().url("Thumbnail must be a valid URL"), // assuming it's a URL
   courseSyllabus: z.string().optional(), // nullable field in DB
+  categoryId: z.string().uuid("invalid category Id")
 //   teacherId: z.string().uuid("Invalid teacher ID format"), // UUID format (VARCHAR(36))
 });
 
+const instUpdatedCourseValidation = instCourseValidation.partial()
+
+export type IUpdateCourse = z.infer<typeof instUpdatedCourseValidation>
 export type IInstCourse = z.infer<typeof instCourseValidation> ;
 
-export {instCourseValidation}
+export {instCourseValidation,instUpdatedCourseValidation}
