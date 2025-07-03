@@ -17,7 +17,7 @@ app.use("/api/v2/institute",instCourseRouter);
 app.use("/api/v2/institute",instCategoryRouter);
 
 //TEACHER ROUTE
-app.use("api/v2/teacher",teacherRouter);
+app.use("/api/v2/teacher",teacherRouter);
 
 app.use(errorHandler)
 export default app;
