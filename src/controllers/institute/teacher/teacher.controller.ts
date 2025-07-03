@@ -8,6 +8,7 @@ import { Multer } from "multer";
 import uploadOnCloudnary from "../../../utils/cloudnary";
 import passwordGenerator from "../../../utils/password.generator";
 import { QueryTypes } from "sequelize";
+import sendEmail from "../../../utils/email.send";
 const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Response)=>{
      //image received
        const teacherImage = req.file as Express.Multer.File;
@@ -47,12 +48,19 @@ const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Re
          throw new ApiError(400,"id not found")
        } 
    
-       console.log(teacherId)
+      //  console.log(teacherId)
        //update the course table 
          await sequelize.query(`UPDATE course_${instituteNumber} SET teacherId=? WHERE id=? `,{
             type: QueryTypes.UPDATE,
             replacements: [teacherId[0].id,validTeacherData.courseId]
-         })
+         });
+         //teacher lai mail pathaunu paryo with email and pass....
+          const mailDetails ={
+               to: validTeacherData.teacherEmail,
+               subject: 'welcome to our institute',
+               message: `Welcome xa hai sir... <b>Email</b>: ${validTeacherData.teacherEmail} | password: ${passwordData.planePassword} | Institute Number: ${instituteNumber}`
+          }
+         await sendEmail(mailDetails);
        return res.json("teacher table created")
        
 

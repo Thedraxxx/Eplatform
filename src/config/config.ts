@@ -18,4 +18,7 @@ export const envconfig ={
     cloud_name : process.env.CLOUDINARY_CLOUD_NAME,
      cloud_api_key : process.env.CLOUDINARY_API_KEY,
      cloud_api_secret : process.env.CLOUDINARY_API_SECRET,
+
+    mailer_gmail: process.env.MAILER_GMAIL,
+    mailer_app_password: process.env.MAILER_GMAIL_APP_PASSWORD
 }
