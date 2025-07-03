@@ -3,7 +3,7 @@ import asyncHandler from "../../../utils/asyncHandler";
 import { IExtedREquest } from "../../../utils/types";
 import ApiError from "../../../utils/APIerror";
 import uploadOnCloudnary from "../../../utils/cloudnary";
-import { instCourseValidation,instUpdatedCourseValidation, IUpdateCourse } from "../../../database/validation/InstituteCourse/course.validation";
+import { instCourseValidation,instUpdatedCourseValidation, IUpdateCourse } from "../../../database/validation/institute/InstituteCourse/course.validation";
 import sequelize from "../../../database/connection";
 import ApiResponse from "../../../utils/ApiResponse";
 import { QueryTypes } from "sequelize";

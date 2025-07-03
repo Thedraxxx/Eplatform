@@ -9,7 +9,7 @@ reset-password
 import { Request, Response } from "express";
 import ApiResponse from "../../../utils/ApiResponse";
 import User from "../../../database/models/user.model";
-import { registerValidation } from "../../../database/validation/user.validation";
+import { registerValidation } from "../../../database/validation/global/user.validation";
 class authController {
   async UserRegister(req: Request, res: Response) {
     const userDataValidate = registerValidation.parse(req.body);

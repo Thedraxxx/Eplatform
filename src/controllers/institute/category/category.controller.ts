@@ -4,7 +4,7 @@ import { IExtedREquest } from "../../../utils/types";
 import {
   categoryValidation,
   updateValidation,
-} from "../../../database/validation/instCategory/category.validation";
+} from "../../../database/validation/institute/instCategory/category.validation";
 import sequelize from "../../../database/connection";
 import ApiResponse from "../../../utils/ApiResponse";
 import { QueryTypes } from "sequelize";

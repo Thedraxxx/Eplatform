@@ -3,7 +3,7 @@ import asyncHandler from "../../../utils/asyncHandler";
 import ApiError from "../../../utils/APIerror";
 import sequelize from "../../../database/connection";
 import { IExtedREquest } from "../../../utils/types";
-import { IInstTeacher, instituteTeacherValidate } from "../../../database/validation/instituteTeacher.validation";
+import { IInstTeacher, instituteTeacherValidate } from "../../../database/validation/institute/instTeacher/instituteTeacher.validation";
 import { Multer } from "multer";
 import uploadOnCloudnary from "../../../utils/cloudnary";
 import passwordGenerator from "../../../utils/password.generator";

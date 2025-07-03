@@ -1,4 +1,4 @@
-import { teacherInstituteController } from "../../../controllers/institute/teacher/teacher.controller";
+import { teacherInstituteController } from "../../../controllers/institute/teacher/instTeacher.controller";
 
 import { Router } from "express";
 import isLoggedIn from "../../../middleware/isLoggedin";
