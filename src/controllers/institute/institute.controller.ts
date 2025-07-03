@@ -100,6 +100,8 @@ class InstituteContoller {
             teacherPhoto VARCHAR(225),
             teacherSalary VARCHAR(100),
             joinedDate DATE,
+            teacherPassword VARCHAR(255),
+            courseId VARCHAR(36) REFERENCES course_${instituteNumber}(id),
             createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             )`);

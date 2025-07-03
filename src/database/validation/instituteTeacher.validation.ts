@@ -31,10 +31,12 @@ const instituteTeacherValidate = z.object({
     // .refine((date) => !isNaN(Date.parse(date)), {
     //   message: "Invalid date format",
     // }),
-    teacherImage: z.object({
+    teacherPhoto: z.object({
         secure_url: z.string().nonempty().url("Invalid Image url"),
         public_id: z.string().nonempty()
-    })
+    }),
+    courseId: z.string().uuid("invaldi course id")
+   
 });
 
 export type IInstTeacher = z.infer<typeof instituteTeacherValidate>

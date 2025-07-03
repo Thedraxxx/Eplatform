@@ -17,7 +17,7 @@ const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Re
        //upload to cloud
        const imagePath = teacherImage.path;
       const imageData = await uploadOnCloudnary(imagePath);
-      req.body.teacherImage = imageData;
+      req.body.teacherPhoto = imageData;
       //zod validation
       const validTeacherData: IInstTeacher = instituteTeacherValidate.parse(req.body);
        if(!validTeacherData){
@@ -31,9 +31,9 @@ const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Re
        //insertion query
        const instituteNumber =req.user?.currentInstituteNumber;
        //inserted datas 
-       await sequelize.query(`INSERT INTO teacher_${instituteNumber}(teacherName, teacherPhoneNumber, teacherEmail,teacherPhoto, teacherSalary, joinedDate) VALUES (?,?,?,?,?,?) `,
+       await sequelize.query(`INSERT INTO teacher_${instituteNumber}(teacherName, teacherPhoneNumber, teacherEmail,teacherPhoto, teacherSalary, joinedDate,teacherPassword,courseId) VALUES (?,?,?,?,?,?,?,?) `,
           {     type: QueryTypes.INSERT,
-               replacements: [validTeacherData.teacherName,validTeacherData.teacherPhoneNumber,validTeacherData.teacherEmail,validTeacherData.teacherImage.secure_url,validTeacherData.teacherSalary,validTeacherData.joinedDate]
+               replacements: [validTeacherData.teacherName,validTeacherData.teacherPhoneNumber,validTeacherData.teacherEmail,validTeacherData.teacherPhoto.secure_url,validTeacherData.teacherSalary,validTeacherData.joinedDate,passwordData.hashedPassword,validTeacherData.courseId]
           }
        )
       //  console.log(teacherData)
@@ -46,14 +46,12 @@ const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Re
        if(teacherId.length ===0){
          throw new ApiError(400,"id not found")
        } 
-       if(!req.body.courseId){
-         throw new ApiError(400,"course id not found")
-       }
+   
        console.log(teacherId)
        //update the course table 
          await sequelize.query(`UPDATE course_${instituteNumber} SET teacherId=? WHERE id=? `,{
             type: QueryTypes.UPDATE,
-            replacements: [teacherId[0].id,req.body.courseId]
+            replacements: [teacherId[0].id,validTeacherData.courseId]
          })
        return res.json("teacher table created")
        
