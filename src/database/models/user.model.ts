@@ -160,6 +160,9 @@ class User extends Model {
       options,
     };
   }
+  static async logout(){
+        
+  }
   generateAccessToken = () => {
     return jwt.sign(
       {
