@@ -166,7 +166,7 @@ class InstituteContoller {
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
       )`);
-      return res.json(instituteNumber)
+      return res.status(201).json(new ApiResponse(201,instituteNumber,"instutute created successfully"))
  }
 }
 
