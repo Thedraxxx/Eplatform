@@ -9,7 +9,8 @@ import uploadOnCloudnary from "../../../utils/cloudnary";
 import passwordGenerator from "../../../utils/password.generator";
 import { QueryTypes } from "sequelize";
 import sendEmail from "../../../utils/email.send";
-const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Response)=>{
+import ApiResponse from "../../../utils/ApiResponse";
+const teacherInstituteCreateController = asyncHandler(async(req: IExtedREquest,res: Response)=>{
      //image received
        const teacherImage = req.file as Express.Multer.File;
        if(!teacherImage){
@@ -65,5 +66,25 @@ const teacherInstituteController = asyncHandler(async(req: IExtedREquest,res: Re
        
 
 })
+const getAllTeacherInInstitute = asyncHandler(async (req: IExtedREquest, res: Response) => {
+  const instituteNumber = req.user?.currentInstituteNumber;
+  if (!instituteNumber || isNaN(Number(instituteNumber))) {
+    return res.status(400).json(new ApiResponse(400, {}, "Invalid institute number"));
+  }
 
-export {teacherInstituteController};
+  try {
+    const [rows] = await sequelize.query(`SELECT * FROM teacher_${instituteNumber}`);
+
+    if (!rows || rows.length === 0) {
+      return res.status(404).json(new ApiResponse(404, [], "No teachers found in this institute"));
+    }
+
+    return res.status(200).json(new ApiResponse(200, rows, "Fetched all the teachers successfully"));
+  } catch (error) {
+    console.error("Error fetching teachers:", error);
+    return res.status(500).json(new ApiResponse(500, {}, "Internal server error"));
+  }
+});
+
+
+export {teacherInstituteCreateController,getAllTeacherInInstitute};
